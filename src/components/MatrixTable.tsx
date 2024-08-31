@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import { Cell } from "../utils/generateMatrix";
 
 const MatrixTable = ({ matrix }: { matrix: Cell[][] }) => {
@@ -23,7 +23,7 @@ const MatrixTable = ({ matrix }: { matrix: Cell[][] }) => {
       })}
       {matrix.map((row, rowIndex) => {
         return (
-          <React.Fragment key={rowIndex + 1}>
+          <Fragment key={rowIndex + 1}>
             <div className="cell">{`Cell Value M=${rowIndex + 1}`}</div>
             {row.map((cell) => {
               return (
@@ -32,7 +32,7 @@ const MatrixTable = ({ matrix }: { matrix: Cell[][] }) => {
                 </div>
               );
             })}
-          </React.Fragment>
+          </Fragment>
         );
       })}
     </div>

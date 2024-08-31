@@ -2,7 +2,7 @@
   display: grid;
   place-items: center;
   height: 100vh;
-  grid-template-rows: auto;
+  grid-template-rows: 100px auto;
 }
 
 .grid-table {
@@ -24,4 +24,16 @@
   text-align: center;
   border: 1px solid #cccccc;
   overflow: hidden;
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+}
+
+input {
+  margin: 4px;
 }
