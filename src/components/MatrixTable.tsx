@@ -9,7 +9,7 @@ const MatrixTable = ({ matrix }: { matrix: Cell[][] }) => {
     <div
       className="grid-table"
       style={{
-        gridTemplateColumns: `repeat(${numberOfColumns + 1}, minmax(0, 1fr))`,
+        gridTemplateColumns: `repeat(${numberOfColumns + 2}, minmax(0, 1fr))`,
         gridTemplateRows: `repeat(${numberOfRows + 1}, minmax(0, 1fr))`,
       }}
     >
@@ -21,7 +21,13 @@ const MatrixTable = ({ matrix }: { matrix: Cell[][] }) => {
           }`}</div>
         );
       })}
+      <div className="header-cell">Sum values</div>
       {matrix.map((row, rowIndex) => {
+        const rowSum = row.reduce(
+          (accumulator, curr) => accumulator + curr.amount,
+          0
+        );
+
         return (
           <Fragment key={rowIndex + 1}>
             <div className="cell">{`Cell Value M=${rowIndex + 1}`}</div>
@@ -32,6 +38,7 @@ const MatrixTable = ({ matrix }: { matrix: Cell[][] }) => {
                 </div>
               );
             })}
+            <div className="cell">{rowSum}</div>
           </Fragment>
         );
       })}
