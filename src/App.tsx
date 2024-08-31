@@ -6,13 +6,13 @@ import "./App.css";
 import MatrixInputForm from "./components/MatrixInputForm";
 
 function App() {
-  const [m, setM] = useState(10);
-  const [n, setN] = useState(10);
+  const [m, setM] = useState(3);
+  const [n, setN] = useState(3);
   const [matrix, setMatrix] = useState(new Array<Array<Cell>>());
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    setMatrix(generateMatrix(m, n, 1000));
+    setMatrix(generateMatrix(m, n, 10));
   }, [m, n]);
 
   const handleNChange = useCallback((value: number) => {
