@@ -1,8 +1,8 @@
 .container {
   display: grid;
-  place-items: center;
   height: 100vh;
-  grid-template-rows: 100px auto;
+  grid-template-rows: min-content min-content;
+  gap: 15px;
 }
 
 .grid-table {

@@ -54,13 +54,11 @@ function App() {
         onMChange={handleMChange}
         onNChange={handleNChange}
       />
-      {isPending ? (
-        <div>Pending...</div>
-      ) : (
-        <div>
-          <MatrixTable matrix={matrix} onCellClick={handleCellClick} />
-        </div>
-      )}
+      <MatrixTable
+        status={isPending ? "Pending..." : ""}
+        matrix={matrix}
+        onCellClick={handleCellClick}
+      />
     </div>
   );
 }

@@ -28,9 +28,11 @@ const CellItem = ({
 
 const MatrixTable = ({
   matrix,
+  status,
   onCellClick,
 }: {
   matrix: Cell[][];
+  status: string;
   onCellClick: (pointer: { rowIndex: number; columnIndex: number }) => void;
 }) => {
   const numberOfRows = matrix.length;
@@ -44,7 +46,7 @@ const MatrixTable = ({
         gridTemplateRows: `repeat(${numberOfRows + 1}, minmax(0, 1fr))`,
       }}
     >
-      <div className="header-cell"></div>
+      <div className="header-cell">{status}</div>
       {Array.from({ length: numberOfColumns }).map((_, index) => {
         return (
           <div key={index + 1} className="header-cell">{`Cell Values N=${
