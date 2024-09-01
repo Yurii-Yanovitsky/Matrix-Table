@@ -26,6 +26,26 @@ function App() {
     });
   }, []);
 
+  const handleCellClick = useCallback(
+    (pointer: { rowIndex: number; columnIndex: number }) => {
+      startTransition(() => {
+        setMatrix((prevMatrix) => {
+          const newMatrix = prevMatrix.map((row, rIndex) =>
+            rIndex === pointer.rowIndex
+              ? row.map((cell, cIndex) =>
+                  cIndex === pointer.columnIndex
+                    ? { ...cell, amount: cell.amount + 1 }
+                    : cell
+                )
+              : row
+          );
+          return newMatrix;
+        });
+      });
+    },
+    []
+  );
+
   return (
     <div className="container">
       <MatrixInputForm
@@ -38,7 +58,7 @@ function App() {
         <div>Pending...</div>
       ) : (
         <div>
-          <MatrixTable matrix={matrix} />
+          <MatrixTable matrix={matrix} onCellClick={handleCellClick} />
         </div>
       )}
     </div>

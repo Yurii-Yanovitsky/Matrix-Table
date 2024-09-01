@@ -1,7 +1,38 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Cell } from "../utils/generateMatrix";
 
-const MatrixTable = ({ matrix }: { matrix: Cell[][] }) => {
+const CellItem = ({
+  cell,
+  onCellClick,
+}: {
+  cell: Cell;
+  onCellClick: () => void;
+}) => {
+  const [amount, setAmount] = useState(cell.amount);
+
+  useEffect(() => {
+    setAmount(cell.amount);
+  }, [cell.amount]);
+
+  const onInnerClick = () => {
+    // setAmount((prev) => prev + 1);
+    onCellClick();
+  };
+
+  return (
+    <div className="cell" onClick={onInnerClick}>
+      {amount}
+    </div>
+  );
+};
+
+const MatrixTable = ({
+  matrix,
+  onCellClick,
+}: {
+  matrix: Cell[][];
+  onCellClick: (pointer: { rowIndex: number; columnIndex: number }) => void;
+}) => {
   const numberOfRows = matrix.length;
   const numberOfColumns = matrix[0] ? matrix[0].length : 0;
 
@@ -31,9 +62,13 @@ const MatrixTable = ({ matrix }: { matrix: Cell[][] }) => {
         return (
           <Fragment key={rowIndex + 1}>
             <div className="cell">{`Cell Value M=${rowIndex + 1}`}</div>
-            {row.map((cell) => {
+            {row.map((cell, columnIndex) => {
               return (
-                <div key={cell.id} data-key={cell.id} className="cell">
+                <div
+                  key={cell.id}
+                  className="cell"
+                  onClick={() => onCellClick({ rowIndex, columnIndex })}
+                >
                   {cell.amount}
                 </div>
               );
