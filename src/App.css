@@ -33,6 +33,18 @@
   background-color: antiquewhite;
 }
 
+.sum-cell {
+  padding: 4px;
+  text-align: center;
+  border: 1px solid #cccccc;
+  overflow: hidden;
+  user-select: none;
+}
+
+.sum-cell:hover {
+  background-color: lightgreen;
+}
+
 .highlighted-cell {
   background-color: skyblue;
 }

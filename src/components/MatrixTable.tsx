@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useCallback, useState } from "react";
 import { Cell } from "../utils/generateMatrix";
 
 const MatrixRow = ({
@@ -16,10 +17,20 @@ const MatrixRow = ({
   onCellLeave: () => void;
   onCellClick: (pointer: { rowIndex: number; columnIndex: number }) => void;
 }) => {
+  const [percentFactor, setPercentFactor] = useState<number | null>(null);
+
   const rowSum = useMemo(
     () => row.reduce((accumulator, curr) => accumulator + curr.amount, 0),
     [row]
   );
+
+  const handleSumCellEntered = useCallback(() => {
+    setPercentFactor(100 / rowSum);
+  }, [rowSum]);
+
+  const handleSumCellLeave = useCallback(() => {
+    setPercentFactor(null);
+  }, []);
 
   return (
     <>
@@ -35,11 +46,19 @@ const MatrixRow = ({
             onMouseOver={() => onCellEnter(cell)}
             onMouseLeave={() => onCellLeave()}
           >
-            {cell.amount}
+            {percentFactor
+              ? `${Math.round(cell.amount * percentFactor)}%`
+              : cell.amount}
           </div>
         );
       })}
-      <div className="cell">{rowSum}</div>
+      <div
+        className="sum-cell"
+        onMouseOver={handleSumCellEntered}
+        onMouseLeave={handleSumCellLeave}
+      >
+        {rowSum}
+      </div>
     </>
   );
 };
