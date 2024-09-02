@@ -16,42 +16,36 @@ function App() {
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    setX(0);
-    setMatrix(generateMatrix(m, n, 999));
+    startTransition(() => {
+      setX(0);
+      setMatrix(generateMatrix(m, n, 999));
+    });
   }, [m, n]);
 
   const handleNChange = useCallback((value: number) => {
-    startTransition(() => {
-      setN(value);
-    });
+    setN(value);
   }, []);
   const handleMChange = useCallback((value: number) => {
-    startTransition(() => {
-      setM(value);
-    });
+    setM(value);
   }, []);
 
   const handleXChange = useCallback((value: number) => {
-    startTransition(() => {
-      setX(value);
-    });
+    setX(value);
   }, []);
 
   const handleCellClick = useCallback(
     (pointer: { rowIndex: number; columnIndex: number }) => {
-      startTransition(() => {
-        setMatrix((prevMatrix) => {
-          const newMatrix = prevMatrix.map((row, rIndex) =>
-            rIndex === pointer.rowIndex
-              ? row.map((cell, cIndex) =>
-                  cIndex === pointer.columnIndex
-                    ? { ...cell, amount: cell.amount + 1 }
-                    : cell
-                )
-              : row
-          );
-          return newMatrix;
-        });
+      setMatrix((prevMatrix) => {
+        const newMatrix = prevMatrix.map((row, rIndex) =>
+          rIndex === pointer.rowIndex
+            ? row.map((cell, cIndex) =>
+                cIndex === pointer.columnIndex
+                  ? { ...cell, amount: cell.amount + 1 }
+                  : cell
+              )
+            : row
+        );
+        return newMatrix;
       });
     },
     []
