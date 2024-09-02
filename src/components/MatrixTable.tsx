@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Cell } from "../utils/generateMatrix";
 
 const MatrixRow = ({
@@ -15,9 +16,9 @@ const MatrixRow = ({
   onCellLeave: () => void;
   onCellClick: (pointer: { rowIndex: number; columnIndex: number }) => void;
 }) => {
-  const rowSum = row.reduce(
-    (accumulator, curr) => accumulator + curr.amount,
-    0
+  const rowSum = useMemo(
+    () => row.reduce((accumulator, curr) => accumulator + curr.amount, 0),
+    [row]
   );
 
   return (
