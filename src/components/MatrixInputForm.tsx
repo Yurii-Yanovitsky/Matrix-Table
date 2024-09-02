@@ -7,6 +7,11 @@ type MatrixInputFormProps = {
   onXChange: (value: number) => void;
 };
 
+const parseInputValue = (inputValue: string, maxLimit = 100) => {
+  const value = parseInt(inputValue) || 0;
+  return value <= maxLimit ? value : maxLimit;
+};
+
 const MatrixInputForm: React.FC<MatrixInputFormProps> = ({
   m,
   n,
@@ -25,7 +30,7 @@ const MatrixInputForm: React.FC<MatrixInputFormProps> = ({
         min={0}
         max={100}
         value={m}
-        onChange={(e) => onMChange(parseInt(e.target.value) || 0)}
+        onChange={(e) => onMChange(parseInputValue(e.target.value))}
       />
       <label htmlFor="N">N = </label>
       <input
@@ -35,7 +40,7 @@ const MatrixInputForm: React.FC<MatrixInputFormProps> = ({
         min={0}
         max={100}
         value={n}
-        onChange={(e) => onNChange(parseInt(e.target.value) || 0)}
+        onChange={(e) => onNChange(parseInputValue(e.target.value))}
       />
       <label htmlFor="X">X = </label>
       <input
@@ -45,7 +50,7 @@ const MatrixInputForm: React.FC<MatrixInputFormProps> = ({
         min={0}
         max={n * m}
         value={x}
-        onChange={(e) => onXChange(parseInt(e.target.value) || 0)}
+        onChange={(e) => onXChange(parseInputValue(e.target.value, n * m))}
       />
     </div>
   );
