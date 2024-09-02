@@ -1,5 +1,47 @@
-import { Fragment } from "react";
 import { Cell } from "../utils/generateMatrix";
+
+const MatrixRow = ({
+  row,
+  rowIndex,
+  highlightedCellsSet,
+  onCellEnter,
+  onCellLeave,
+  onCellClick,
+}: {
+  row: Cell[];
+  rowIndex: number;
+  highlightedCellsSet: Set<number>;
+  onCellEnter: (cell: Cell) => void;
+  onCellLeave: () => void;
+  onCellClick: (pointer: { rowIndex: number; columnIndex: number }) => void;
+}) => {
+  const rowSum = row.reduce(
+    (accumulator, curr) => accumulator + curr.amount,
+    0
+  );
+
+  return (
+    <>
+      <div className="cell">{`Cell Value M=${rowIndex + 1}`}</div>
+      {row.map((cell, columnIndex) => {
+        const isHighlighted = highlightedCellsSet.has(cell.id);
+
+        return (
+          <div
+            key={cell.id}
+            className={isHighlighted ? "cell highlighted-cell" : "cell"}
+            onClick={() => onCellClick({ rowIndex, columnIndex })}
+            onMouseOver={() => onCellEnter(cell)}
+            onMouseLeave={() => onCellLeave()}
+          >
+            {cell.amount}
+          </div>
+        );
+      })}
+      <div className="cell">{rowSum}</div>
+    </>
+  );
+};
 
 const MatrixTable = ({
   matrix,
@@ -36,34 +78,17 @@ const MatrixTable = ({
         );
       })}
       <div className="header-cell">Sum values</div>
-      {matrix.map((row, rowIndex) => {
-        const rowSum = row.reduce(
-          (accumulator, curr) => accumulator + curr.amount,
-          0
-        );
-
-        return (
-          <Fragment key={rowIndex + 1}>
-            <div className="cell">{`Cell Value M=${rowIndex + 1}`}</div>
-            {row.map((cell, columnIndex) => {
-              const isHighlighted = highlightedCellsSet.has(cell.id);
-
-              return (
-                <div
-                  key={cell.id}
-                  className={isHighlighted ? "cell highlighted-cell" : "cell"}
-                  onClick={() => onCellClick({ rowIndex, columnIndex })}
-                  onMouseOver={() => onCellEnter(cell)}
-                  onMouseLeave={() => onCellLeave()}
-                >
-                  {cell.amount}
-                </div>
-              );
-            })}
-            <div className="cell">{rowSum}</div>
-          </Fragment>
-        );
-      })}
+      {matrix.map((row, rowIndex) => (
+        <MatrixRow
+          key={rowIndex}
+          row={row}
+          rowIndex={rowIndex}
+          highlightedCellsSet={highlightedCellsSet}
+          onCellClick={onCellClick}
+          onCellEnter={onCellEnter}
+          onCellLeave={onCellLeave}
+        />
+      ))}
       <div className="cell">Average values</div>
       {Array.from({ length: numberOfColumns }).map((_, columnIndex) => {
         const columnSum = matrix.reduce(
