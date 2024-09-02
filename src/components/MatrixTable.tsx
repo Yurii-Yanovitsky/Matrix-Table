@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useCallback, useState } from "react";
 import { Cell } from "../utils/generateMatrix";
+import { getColorForPercentage } from "../utils/getColorForPercentage";
 
 const MatrixRow = ({
   row,
@@ -37,18 +38,25 @@ const MatrixRow = ({
       <div className="cell">{`Cell Value M=${rowIndex + 1}`}</div>
       {row.map((cell, columnIndex) => {
         const isHighlighted = highlightedCellsSet.has(cell.id);
+        const backgroundColor = percentFactor
+          ? getColorForPercentage(percentFactor * cell.amount)
+          : "";
+        const value = percentFactor
+          ? `${Math.round(cell.amount * percentFactor)}%`
+          : cell.amount;
 
         return (
           <div
             key={cell.id}
+            style={{
+              backgroundColor,
+            }}
             className={isHighlighted ? "cell highlighted-cell" : "cell"}
             onClick={() => onCellClick({ rowIndex, columnIndex })}
             onMouseOver={() => onCellEnter(cell)}
             onMouseLeave={() => onCellLeave()}
           >
-            {percentFactor
-              ? `${Math.round(cell.amount * percentFactor)}%`
-              : cell.amount}
+            {value}
           </div>
         );
       })}
