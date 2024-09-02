@@ -2,28 +2,31 @@
   display: grid;
   height: 100vh;
   grid-template-rows: min-content min-content;
-  gap: 15px;
+  padding: 8px;
 }
 
 .grid-table {
   font-size: 10px;
   display: grid;
+  width: max-content;
 }
 
 .header-cell {
-  padding: 5px;
+  padding: 4px;
   text-align: center;
   font-weight: bold;
   background-color: #f0f0f0;
   border: 1px solid #cccccc;
   overflow: hidden;
+  user-select: none;
 }
 
 .cell {
-  padding: 5px;
+  padding: 4px;
   text-align: center;
   border: 1px solid #cccccc;
   overflow: hidden;
+  user-select: none;
 }
 
 .cell:hover {
@@ -36,7 +39,6 @@
 
 .input-container {
   display: flex;
-  justify-content: center;
   align-items: center;
   width: 100%;
   padding: 10px;
