@@ -7,7 +7,7 @@
 
 .grid-table {
   font-size: 10px;
-  display: grid;
+  /* display: grid; */
   width: max-content;
 }
 

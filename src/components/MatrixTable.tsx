@@ -34,7 +34,12 @@ const MatrixRow = ({
   }, []);
 
   return (
-    <>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${row.length + 2}, minmax(0, 1fr))`,
+      }}
+    >
       <div className="cell">{`Cell Value M=${rowIndex + 1}`}</div>
       {row.map((cell, columnIndex) => {
         const isHighlighted = highlightedCellsSet.has(cell.id);
@@ -67,7 +72,69 @@ const MatrixRow = ({
       >
         {rowSum}
       </div>
-    </>
+    </div>
+  );
+};
+
+const MatrixHeader = ({
+  status,
+  numberOfColumns,
+}: {
+  status: string;
+  numberOfColumns: number;
+}) => {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${numberOfColumns + 2}, minmax(0, 1fr))`,
+      }}
+    >
+      <div className="header-cell">{status}</div>
+      {Array.from({ length: numberOfColumns }).map((_, index) => {
+        return (
+          <div key={index + 1} className="header-cell">{`Cell Values N=${
+            index + 1
+          }`}</div>
+        );
+      })}
+      <div className="header-cell">Sum values</div>
+    </div>
+  );
+};
+
+const MatrixFooter = ({
+  matrix,
+  numberOfColumns,
+  numberOfRows,
+}: {
+  matrix: Cell[][];
+  numberOfColumns: number;
+  numberOfRows: number;
+}) => {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${numberOfColumns + 2}, minmax(0, 1fr))`,
+      }}
+    >
+      <div className="cell">Average values</div>
+      {Array.from({ length: numberOfColumns }).map((_, columnIndex) => {
+        const columnSum = matrix.reduce(
+          (accumulator, curr) => accumulator + curr[columnIndex].amount,
+          0
+        );
+        const average = Math.round((columnSum / numberOfRows) * 10) / 10;
+
+        return (
+          <div key={columnIndex + 1} className="cell">
+            {average}
+          </div>
+        );
+      })}
+      <div className="cell"></div>
+    </div>
   );
 };
 
@@ -93,19 +160,10 @@ const MatrixTable = ({
     <div
       className="grid-table"
       style={{
-        gridTemplateColumns: `repeat(${numberOfColumns + 2}, minmax(0, 1fr))`,
         gridTemplateRows: `repeat(${numberOfRows + 1}, minmax(0, 1fr))`,
       }}
     >
-      <div className="header-cell">{status}</div>
-      {Array.from({ length: numberOfColumns }).map((_, index) => {
-        return (
-          <div key={index + 1} className="header-cell">{`Cell Values N=${
-            index + 1
-          }`}</div>
-        );
-      })}
-      <div className="header-cell">Sum values</div>
+      <MatrixHeader status={status} numberOfColumns={numberOfColumns} />
       {matrix.map((row, rowIndex) => (
         <MatrixRow
           key={rowIndex}
@@ -117,21 +175,11 @@ const MatrixTable = ({
           onCellLeave={onCellLeave}
         />
       ))}
-      <div className="cell">Average values</div>
-      {Array.from({ length: numberOfColumns }).map((_, columnIndex) => {
-        const columnSum = matrix.reduce(
-          (accumulator, curr) => accumulator + curr[columnIndex].amount,
-          0
-        );
-        const average = Math.round((columnSum / numberOfRows) * 10) / 10;
-
-        return (
-          <div key={columnIndex + 1} className="cell">
-            {average}
-          </div>
-        );
-      })}
-      <div className="cell"></div>
+      <MatrixFooter
+        matrix={matrix}
+        numberOfColumns={numberOfColumns}
+        numberOfRows={numberOfRows}
+      />
     </div>
   );
 };
