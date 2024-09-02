@@ -71,7 +71,9 @@ function App() {
   );
 
   const handleCellLeave = useCallback(() => {
-    setHighlightedCellsSet(new Set());
+    startTransition(() => {
+      setHighlightedCellsSet(new Set());
+    });
   }, []);
 
   return (
