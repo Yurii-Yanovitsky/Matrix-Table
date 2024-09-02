@@ -45,7 +45,7 @@ export const MatrixRow = ({
           cell={cell}
           percentFactor={percentFactor}
           highlighted={isCellHighlighted(cell)}
-          onClick={() => handleCellClick(rowIndex, cell.id)}
+          onClick={() => handleCellClick(rowIndex, cell)}
           onMouseEnter={() => handleCellEnter(cell)}
           onMouseLeave={() => handleCellLeave()}
         />

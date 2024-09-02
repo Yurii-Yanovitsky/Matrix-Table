@@ -5,9 +5,8 @@
   padding: 8px;
 }
 
-.grid-table {
+.matrix-table-container {
   font-size: 10px;
-  /* display: grid; */
   width: max-content;
 }
 

@@ -1,20 +1,15 @@
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useState, startTransition } from "react";
+import MatrixInputForm from "./components/MatrixInputForm";
 import MatrixTable from "./components/MatrixTable";
 import { Cell, generateMatrix } from "./utils/generateMatrix";
 
 import "./App.css";
-import MatrixInputForm from "./components/MatrixInputForm";
-import MatrixTable1 from "./components/MatrixTable1";
 
 function App() {
   const [m, setM] = useState(100);
   const [n, setN] = useState(100);
   const [x, setX] = useState(0);
   const [matrix, setMatrix] = useState(new Array<Array<Cell>>());
-  const [highlightedCellsSet, setHighlightedCellsSet] = useState(
-    new Set<number>()
-  );
-  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     startTransition(() => {
@@ -44,7 +39,7 @@ function App() {
         onNChange={handleNChange}
         onXChange={handleXChange}
       />
-      <MatrixTable1 matrix={matrix} highlightedAmount={x} />
+      <MatrixTable matrix={matrix} highlightedAmount={x} />
     </div>
   );
 }

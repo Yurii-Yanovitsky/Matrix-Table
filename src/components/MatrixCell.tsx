@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Cell } from "../utils/generateMatrix";
 import { getColorForPercentage } from "../utils/getColorForPercentage";
 

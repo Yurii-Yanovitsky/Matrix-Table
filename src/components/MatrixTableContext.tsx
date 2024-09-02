@@ -17,7 +17,7 @@ type MatrixTableContextType = {
   numberOfRows: number;
   numberOfColumns: number;
   isCellHighlighted: (cell: Cell) => boolean;
-  handleCellClick: (rowIndex: number, cellId: number) => void;
+  handleCellClick: (rowIndex: number, cell: Cell) => void;
   handleCellEnter: (cell: Cell) => void;
   handleCellLeave: () => void;
 };
@@ -47,18 +47,30 @@ export const MatrixTableProvider: FC<
 
   const [isPending, startTransition] = useTransition();
 
-  const handleCellClick = useCallback((rowIndex: number, cellId: number) => {
-    setMatrix((prevMatrix) => {
-      const newMatrix = prevMatrix.map((row, rIndex) =>
-        rIndex === rowIndex
-          ? row.map((cell) =>
-              cell.id === cellId ? { ...cell, amount: cell.amount + 1 } : cell
-            )
-          : row
-      );
-      return newMatrix;
-    });
-  }, []);
+  const handleCellClick = useCallback(
+    (rowIndex: number, incrementedCell: Cell) => {
+      setMatrix((prevMatrix) => {
+        const newMatrix = prevMatrix.map((row, rIndex) => {
+          if (rIndex === rowIndex) {
+            return row.map((cell) => {
+              if (cell.id === incrementedCell.id) {
+                return {
+                  ...cell,
+                  amount: cell.amount + 1,
+                };
+              }
+
+              return cell;
+            });
+          }
+
+          return row;
+        });
+        return newMatrix;
+      });
+    },
+    []
+  );
 
   const handleCellEnter = useCallback(
     (cell: Cell) => {
