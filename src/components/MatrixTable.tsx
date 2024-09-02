@@ -1,38 +1,19 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import { Cell } from "../utils/generateMatrix";
-
-const CellItem = ({
-  cell,
-  onCellClick,
-}: {
-  cell: Cell;
-  onCellClick: () => void;
-}) => {
-  const [amount, setAmount] = useState(cell.amount);
-
-  useEffect(() => {
-    setAmount(cell.amount);
-  }, [cell.amount]);
-
-  const onInnerClick = () => {
-    // setAmount((prev) => prev + 1);
-    onCellClick();
-  };
-
-  return (
-    <div className="cell" onClick={onInnerClick}>
-      {amount}
-    </div>
-  );
-};
 
 const MatrixTable = ({
   matrix,
+  highlightedCellsSet,
   status,
   onCellClick,
+  onCellEnter,
+  onCellLeave,
 }: {
   matrix: Cell[][];
+  highlightedCellsSet: Set<number>;
   status: string;
+  onCellEnter: (cell: Cell) => void;
+  onCellLeave: () => void;
   onCellClick: (pointer: { rowIndex: number; columnIndex: number }) => void;
 }) => {
   const numberOfRows = matrix.length;
@@ -65,11 +46,15 @@ const MatrixTable = ({
           <Fragment key={rowIndex + 1}>
             <div className="cell">{`Cell Value M=${rowIndex + 1}`}</div>
             {row.map((cell, columnIndex) => {
+              const isHighlighted = highlightedCellsSet.has(cell.id);
+
               return (
                 <div
                   key={cell.id}
-                  className="cell"
+                  className={isHighlighted ? "cell highlighted-cell" : "cell"}
                   onClick={() => onCellClick({ rowIndex, columnIndex })}
+                  onMouseOver={() => onCellEnter(cell)}
+                  onMouseLeave={() => onCellLeave()}
                 >
                   {cell.amount}
                 </div>

@@ -26,6 +26,14 @@
   overflow: hidden;
 }
 
+.cell:hover {
+  background-color: antiquewhite;
+}
+
+.highlighted-cell {
+  background-color: skyblue;
+}
+
 .input-container {
   display: flex;
   justify-content: center;
