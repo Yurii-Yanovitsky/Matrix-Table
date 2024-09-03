@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Matrix-Table/static/css/main.d42ab53f.css",
-    "main.js": "/Matrix-Table/static/js/main.9875e3db.js",
+    "main.css": "/Matrix-Table/static/css/main.d1baf875.css",
+    "main.js": "/Matrix-Table/static/js/main.107a162a.js",
     "static/js/453.63f6b601.chunk.js": "/Matrix-Table/static/js/453.63f6b601.chunk.js",
     "index.html": "/Matrix-Table/index.html",
-    "main.d42ab53f.css.map": "/Matrix-Table/static/css/main.d42ab53f.css.map",
-    "main.9875e3db.js.map": "/Matrix-Table/static/js/main.9875e3db.js.map",
+    "main.d1baf875.css.map": "/Matrix-Table/static/css/main.d1baf875.css.map",
+    "main.107a162a.js.map": "/Matrix-Table/static/js/main.107a162a.js.map",
     "453.63f6b601.chunk.js.map": "/Matrix-Table/static/js/453.63f6b601.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d42ab53f.css",
-    "static/js/main.9875e3db.js"
+    "static/css/main.d1baf875.css",
+    "static/js/main.107a162a.js"
   ]
 }
