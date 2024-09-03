@@ -6,8 +6,8 @@ import { Cell, generateMatrix } from "./utils/generateMatrix";
 import "./App.css";
 
 function App() {
-  const [m, setM] = useState(100);
-  const [n, setN] = useState(100);
+  const [m, setM] = useState(10);
+  const [n, setN] = useState(10);
   const [x, setX] = useState(0);
   const [matrix, setMatrix] = useState(new Array<Array<Cell>>());
 

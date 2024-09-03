@@ -5,12 +5,12 @@ export const MatrixFooter = () => {
 
   return (
     <div
+      className="table-footer"
       style={{
-        display: "grid",
         gridTemplateColumns: `repeat(${numberOfColumns + 2}, minmax(0, 1fr))`,
       }}
     >
-      <div className="cell">Average values</div>
+      <div className="table-cell">Average values</div>
       {Array.from({ length: numberOfColumns }).map((_, columnIndex) => {
         const columnSum = matrix.reduce(
           (accumulator, curr) => accumulator + curr[columnIndex].amount,
@@ -19,12 +19,12 @@ export const MatrixFooter = () => {
         const average = Math.round((columnSum / numberOfRows) * 10) / 10;
 
         return (
-          <div key={columnIndex + 1} className="cell">
+          <div key={columnIndex + 1} className="table-cell">
             {average}
           </div>
         );
       })}
-      <div className="cell"></div>
+      <div className="table-cell"></div>
     </div>
   );
 };

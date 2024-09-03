@@ -2,6 +2,17 @@ import { useState, useMemo, useCallback } from "react";
 import { Cell } from "../utils/generateMatrix";
 import { MatrixCell } from "./MatrixCell";
 import { useMatrix } from "./MatrixTableContext";
+import { getColorForPercentage } from "../utils/getColorForPercentage";
+
+const getCellBgColor = (cellAmount: number, percentFactor: number | null) => {
+  return percentFactor ? getColorForPercentage(cellAmount * percentFactor) : "";
+};
+
+const getCellValue = (cellAmount: number, percentFactor: number | null) => {
+  return percentFactor
+    ? `${Math.round(cellAmount * percentFactor)}%`
+    : `${cellAmount}`;
+};
 
 export const MatrixRow = ({
   cells,
@@ -13,11 +24,11 @@ export const MatrixRow = ({
   title: string;
 }) => {
   const {
-    handleCellClick,
-    handleCellEnter,
-    handleCellLeave,
+    incrementCell,
+    highlightNearestCells,
+    resetHighlightedCells,
     isCellHighlighted,
-    handleDeleteRow,
+    deleteRow,
   } = useMatrix();
   const [isEntered, setIsEntered] = useState(false);
   const [percentFactor, setPercentFactor] = useState<number | null>(null);
@@ -26,55 +37,36 @@ export const MatrixRow = ({
     [cells]
   );
 
-  const handleSumCellEntered = useCallback(() => {
-    setPercentFactor(100 / rowSum);
-  }, [rowSum]);
-
-  const handleSumCellLeave = useCallback(() => {
-    setPercentFactor(null);
-  }, []);
-
-  const handleRowEnter = useCallback(() => {
-    setIsEntered(true);
-  }, []);
-
-  const handleRowLeave = useCallback(() => {
-    setIsEntered(false);
-  }, []);
-
   return (
     <div
-      onMouseEnter={handleRowEnter}
-      onMouseLeave={handleRowLeave}
-      className="row"
+      onMouseEnter={() => setIsEntered(true)}
+      onMouseLeave={() => setIsEntered(false)}
+      className="table-row"
       style={{
         gridTemplateColumns: `repeat(${cells.length + 2}, minmax(0, 1fr))`,
       }}
     >
-      <div className="cell">{title}</div>
+      <div className="table-cell">{title}</div>
       {cells.map((cell) => (
         <MatrixCell
           key={cell.id}
-          cell={cell}
-          percentFactor={percentFactor}
+          value={getCellValue(cell.amount, percentFactor)}
+          backgroundColor={getCellBgColor(cell.amount, percentFactor)}
           highlighted={isCellHighlighted(cell)}
-          onClick={() => handleCellClick(rowId, cell.id)}
-          onMouseEnter={() => handleCellEnter(cell)}
-          onMouseLeave={() => handleCellLeave()}
+          onClick={() => incrementCell(rowId, cell.id)}
+          onMouseEnter={() => highlightNearestCells(cell)}
+          onMouseLeave={() => resetHighlightedCells()}
         />
       ))}
       <div
         className="sum-cell"
-        onMouseOver={handleSumCellEntered}
-        onMouseLeave={handleSumCellLeave}
+        onMouseEnter={() => setPercentFactor(100 / rowSum)}
+        onMouseLeave={() => setPercentFactor(null)}
       >
         {rowSum}
       </div>
       {isEntered && (
-        <button
-          className="delete-button"
-          onClick={() => handleDeleteRow(rowId)}
-        >
+        <button className="row-delete-button" onClick={() => deleteRow(rowId)}>
           X
         </button>
       )}

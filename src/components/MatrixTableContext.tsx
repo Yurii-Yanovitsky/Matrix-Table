@@ -17,11 +17,11 @@ type MatrixTableContextType = {
   numberOfRows: number;
   numberOfColumns: number;
   isCellHighlighted: (cell: Cell) => boolean;
-  handleCellClick: (rowId: number, cellId: number) => void;
-  handleCellEnter: (cell: Cell) => void;
-  handleCellLeave: () => void;
-  handleDeleteRow: (rowId: number) => void;
-  handleAddRow: () => void;
+  incrementCell: (rowId: number, cellId: number) => void;
+  highlightNearestCells: (cell: Cell) => void;
+  resetHighlightedCells: () => void;
+  deleteRow: (rowId: number) => void;
+  addRow: () => void;
 };
 
 const MatrixTableContext = createContext<MatrixTableContextType>({
@@ -30,11 +30,11 @@ const MatrixTableContext = createContext<MatrixTableContextType>({
   numberOfRows: 0,
   numberOfColumns: 0,
   isCellHighlighted: () => false,
-  handleCellClick: () => {},
-  handleCellEnter: () => {},
-  handleCellLeave: () => {},
-  handleDeleteRow: () => {},
-  handleAddRow: () => {},
+  incrementCell: () => {},
+  highlightNearestCells: () => {},
+  resetHighlightedCells: () => {},
+  deleteRow: () => {},
+  addRow: () => {},
 });
 
 export const MatrixTableProvider: FC<
@@ -51,7 +51,7 @@ export const MatrixTableProvider: FC<
 
   const [isPending, startTransition] = useTransition();
 
-  const handleCellClick = useCallback((rowId: number, cellId: number) => {
+  const incrementCell = useCallback((rowId: number, cellId: number) => {
     setMatrix((prevMatrix) => {
       const newMatrix = prevMatrix.map((row) => {
         if (row[0].id === rowId) {
@@ -73,7 +73,7 @@ export const MatrixTableProvider: FC<
     });
   }, []);
 
-  const handleCellEnter = useCallback(
+  const highlightNearestCells = useCallback(
     (cell: Cell) => {
       startTransition(() => {
         const nearestCells = matrix
@@ -92,7 +92,7 @@ export const MatrixTableProvider: FC<
     [matrix, highlightedAmount]
   );
 
-  const handleCellLeave = useCallback(() => {
+  const resetHighlightedCells = useCallback(() => {
     startTransition(() => {
       setHighlightedCellsSet(new Set());
     });
@@ -105,7 +105,7 @@ export const MatrixTableProvider: FC<
     [highlightedCellsSet]
   );
 
-  const handleDeleteRow = useCallback((rowId: number) => {
+  const deleteRow = useCallback((rowId: number) => {
     startTransition(() => {
       setMatrix((prevMatrix) =>
         prevMatrix.filter((row) => row[0].id !== rowId)
@@ -113,7 +113,7 @@ export const MatrixTableProvider: FC<
     });
   }, []);
 
-  const handleAddRow = useCallback(() => {
+  const addRow = useCallback(() => {
     startTransition(() => {
       setMatrix((prevMatrix) => {
         const newMatrix = [...prevMatrix];
@@ -131,21 +131,21 @@ export const MatrixTableProvider: FC<
       numberOfRows: matrix.length,
       numberOfColumns: matrix[0] ? matrix[0].length : 0,
       isCellHighlighted,
-      handleCellClick,
-      handleCellEnter,
-      handleCellLeave,
-      handleDeleteRow,
-      handleAddRow,
+      incrementCell,
+      highlightNearestCells,
+      resetHighlightedCells,
+      deleteRow,
+      addRow,
     };
   }, [
     matrix,
     isPending,
     isCellHighlighted,
-    handleCellClick,
-    handleCellEnter,
-    handleCellLeave,
-    handleDeleteRow,
-    handleAddRow,
+    incrementCell,
+    highlightNearestCells,
+    resetHighlightedCells,
+    deleteRow,
+    addRow,
   ]);
 
   return (

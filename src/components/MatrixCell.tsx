@@ -1,37 +1,24 @@
-import { memo } from "react";
-import { Cell } from "../utils/generateMatrix";
-import { getColorForPercentage } from "../utils/getColorForPercentage";
-
 export const MatrixCell = ({
-  cell,
-  percentFactor,
+  value,
+  backgroundColor,
   highlighted,
   onClick,
   onMouseEnter,
   onMouseLeave,
 }: {
-  cell: Cell;
-  percentFactor: number | null;
+  value: string;
+  backgroundColor: string;
   highlighted: boolean;
   onClick: () => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }) => {
-  let backgroundColor = "";
-  let value = `${cell.amount}`;
-
-  if (percentFactor) {
-    backgroundColor = getColorForPercentage(cell.amount * percentFactor);
-    value = `${Math.round(cell.amount * percentFactor)}%`;
-  }
-
   return (
     <div
-      key={cell.id}
       style={{
         backgroundColor,
       }}
-      className={highlighted ? "cell highlighted-cell" : "cell"}
+      className={highlighted ? "table-cell highlighted-cell" : "table-cell"}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

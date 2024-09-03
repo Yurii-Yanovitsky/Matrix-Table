@@ -16,7 +16,7 @@ const MatrixTable = ({
       initMatrix={matrix}
       highlightedAmount={highlightedAmount}
     >
-      <div className="matrix-table-container">
+      <div className="table-container">
         <MatrixHeader />
         <MatrixBody />
         <MatrixFooter />
