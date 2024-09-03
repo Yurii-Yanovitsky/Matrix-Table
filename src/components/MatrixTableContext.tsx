@@ -9,7 +9,7 @@ import {
   useState,
   useTransition,
 } from "react";
-import { Cell } from "../utils/generateMatrix";
+import { Cell, generateRow } from "../utils/generateMatrix";
 
 type MatrixTableContextType = {
   matrix: Cell[][];
@@ -21,6 +21,7 @@ type MatrixTableContextType = {
   handleCellEnter: (cell: Cell) => void;
   handleCellLeave: () => void;
   handleDeleteRow: (rowIndex: number) => void;
+  handleAddRow: () => void;
 };
 
 const MatrixTableContext = createContext<MatrixTableContextType>({
@@ -33,6 +34,7 @@ const MatrixTableContext = createContext<MatrixTableContextType>({
   handleCellEnter: () => {},
   handleCellLeave: () => {},
   handleDeleteRow: () => {},
+  handleAddRow: () => {},
 });
 
 export const MatrixTableProvider: FC<
@@ -114,6 +116,17 @@ export const MatrixTableProvider: FC<
     });
   }, []);
 
+  const handleAddRow = useCallback(() => {
+    startTransition(() => {
+      setMatrix((prevMatrix) => {
+        const newMatrix = [...prevMatrix];
+        const newRow = generateRow(newMatrix[0]?.length ?? 0, 1000);
+        newMatrix.push(newRow);
+        return newMatrix;
+      });
+    });
+  }, []);
+
   const value = useMemo(() => {
     return {
       matrix,
@@ -125,6 +138,7 @@ export const MatrixTableProvider: FC<
       handleCellEnter,
       handleCellLeave,
       handleDeleteRow,
+      handleAddRow,
     };
   }, [
     matrix,
@@ -134,6 +148,7 @@ export const MatrixTableProvider: FC<
     handleCellEnter,
     handleCellLeave,
     handleDeleteRow,
+    handleAddRow,
   ]);
 
   return (

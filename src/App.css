@@ -66,6 +66,10 @@
   translate: 100%;
 }
 
+.add-button {
+  padding: 8px 0;
+}
+
 .input-container {
   display: flex;
   align-items: center;
