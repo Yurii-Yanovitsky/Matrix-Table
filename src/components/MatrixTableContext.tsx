@@ -20,6 +20,7 @@ type MatrixTableContextType = {
   handleCellClick: (rowIndex: number, cell: Cell) => void;
   handleCellEnter: (cell: Cell) => void;
   handleCellLeave: () => void;
+  handleDeleteRow: (rowIndex: number) => void;
 };
 
 const MatrixTableContext = createContext<MatrixTableContextType>({
@@ -31,6 +32,7 @@ const MatrixTableContext = createContext<MatrixTableContextType>({
   handleCellClick: () => {},
   handleCellEnter: () => {},
   handleCellLeave: () => {},
+  handleDeleteRow: () => {},
 });
 
 export const MatrixTableProvider: FC<
@@ -104,6 +106,14 @@ export const MatrixTableProvider: FC<
     [highlightedCellsSet]
   );
 
+  const handleDeleteRow = useCallback((rowIndex: number) => {
+    startTransition(() => {
+      setMatrix((prevMatrix) =>
+        prevMatrix.filter((_, index) => index !== rowIndex)
+      );
+    });
+  }, []);
+
   const value = useMemo(() => {
     return {
       matrix,
@@ -114,6 +124,7 @@ export const MatrixTableProvider: FC<
       handleCellClick,
       handleCellEnter,
       handleCellLeave,
+      handleDeleteRow,
     };
   }, [
     matrix,
@@ -122,6 +133,7 @@ export const MatrixTableProvider: FC<
     handleCellClick,
     handleCellEnter,
     handleCellLeave,
+    handleDeleteRow,
   ]);
 
   return (

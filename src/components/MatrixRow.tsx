@@ -15,8 +15,9 @@ export const MatrixRow = ({
     handleCellEnter,
     handleCellLeave,
     isCellHighlighted,
+    handleDeleteRow,
   } = useMatrix();
-
+  const [isEntered, setIsEntered] = useState(false);
   const [percentFactor, setPercentFactor] = useState<number | null>(null);
   const rowSum = useMemo(
     () => cells.reduce((accumulator, curr) => accumulator + curr.amount, 0),
@@ -31,10 +32,20 @@ export const MatrixRow = ({
     setPercentFactor(null);
   }, []);
 
+  const handleRowEnter = useCallback(() => {
+    setIsEntered(true);
+  }, []);
+
+  const handleRowLeave = useCallback(() => {
+    setIsEntered(false);
+  }, []);
+
   return (
     <div
+      onMouseEnter={handleRowEnter}
+      onMouseLeave={handleRowLeave}
+      className="row"
       style={{
-        display: "grid",
         gridTemplateColumns: `repeat(${cells.length + 2}, minmax(0, 1fr))`,
       }}
     >
@@ -57,6 +68,14 @@ export const MatrixRow = ({
       >
         {rowSum}
       </div>
+      {isEntered && (
+        <button
+          className="delete-button"
+          onClick={() => handleDeleteRow(rowIndex)}
+        >
+          X
+        </button>
+      )}
     </div>
   );
 };

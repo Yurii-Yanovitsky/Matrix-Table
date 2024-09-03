@@ -10,6 +10,11 @@
   width: max-content;
 }
 
+.row {
+  display: grid;
+  position: relative;
+}
+
 .header-cell {
   padding: 4px;
   text-align: center;
@@ -46,6 +51,19 @@
 
 .highlighted-cell {
   background-color: skyblue;
+}
+
+.delete-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white;
+  border: none;
+  padding: 5px 2px;
+  font-weight: bold;
+  font-size: 10px;
+  cursor: pointer;
+  translate: 100%;
 }
 
 .input-container {
