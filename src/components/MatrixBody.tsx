@@ -7,7 +7,12 @@ export const MatrixBody = () => {
   return (
     <>
       {matrix.map((cells, rowIndex) => (
-        <MatrixRow key={rowIndex} rowIndex={rowIndex} cells={cells} />
+        <MatrixRow
+          key={cells[0].id}
+          rowId={cells[0].id}
+          title={`Cell Value M=${rowIndex + 1}`}
+          cells={cells}
+        />
       ))}
     </>
   );

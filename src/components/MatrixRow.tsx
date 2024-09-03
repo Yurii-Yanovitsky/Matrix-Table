@@ -4,11 +4,13 @@ import { MatrixCell } from "./MatrixCell";
 import { useMatrix } from "./MatrixTableContext";
 
 export const MatrixRow = ({
-  rowIndex,
   cells,
+  rowId,
+  title,
 }: {
-  rowIndex: number;
   cells: Cell[];
+  rowId: number;
+  title: string;
 }) => {
   const {
     handleCellClick,
@@ -49,14 +51,14 @@ export const MatrixRow = ({
         gridTemplateColumns: `repeat(${cells.length + 2}, minmax(0, 1fr))`,
       }}
     >
-      <div className="cell">{`Cell Value M=${rowIndex + 1}`}</div>
+      <div className="cell">{title}</div>
       {cells.map((cell) => (
         <MatrixCell
           key={cell.id}
           cell={cell}
           percentFactor={percentFactor}
           highlighted={isCellHighlighted(cell)}
-          onClick={() => handleCellClick(rowIndex, cell)}
+          onClick={() => handleCellClick(rowId, cell.id)}
           onMouseEnter={() => handleCellEnter(cell)}
           onMouseLeave={() => handleCellLeave()}
         />
@@ -71,7 +73,7 @@ export const MatrixRow = ({
       {isEntered && (
         <button
           className="delete-button"
-          onClick={() => handleDeleteRow(rowIndex)}
+          onClick={() => handleDeleteRow(rowId)}
         >
           X
         </button>

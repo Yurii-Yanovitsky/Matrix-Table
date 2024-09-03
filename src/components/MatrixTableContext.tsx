@@ -17,10 +17,10 @@ type MatrixTableContextType = {
   numberOfRows: number;
   numberOfColumns: number;
   isCellHighlighted: (cell: Cell) => boolean;
-  handleCellClick: (rowIndex: number, cell: Cell) => void;
+  handleCellClick: (rowId: number, cellId: number) => void;
   handleCellEnter: (cell: Cell) => void;
   handleCellLeave: () => void;
-  handleDeleteRow: (rowIndex: number) => void;
+  handleDeleteRow: (rowId: number) => void;
   handleAddRow: () => void;
 };
 
@@ -51,30 +51,27 @@ export const MatrixTableProvider: FC<
 
   const [isPending, startTransition] = useTransition();
 
-  const handleCellClick = useCallback(
-    (rowIndex: number, incrementedCell: Cell) => {
-      setMatrix((prevMatrix) => {
-        const newMatrix = prevMatrix.map((row, rIndex) => {
-          if (rIndex === rowIndex) {
-            return row.map((cell) => {
-              if (cell.id === incrementedCell.id) {
-                return {
-                  ...cell,
-                  amount: cell.amount + 1,
-                };
-              }
+  const handleCellClick = useCallback((rowId: number, cellId: number) => {
+    setMatrix((prevMatrix) => {
+      const newMatrix = prevMatrix.map((row) => {
+        if (row[0].id === rowId) {
+          return row.map((cell) => {
+            if (cell.id === cellId) {
+              return {
+                ...cell,
+                amount: cell.amount + 1,
+              };
+            }
 
-              return cell;
-            });
-          }
+            return cell;
+          });
+        }
 
-          return row;
-        });
-        return newMatrix;
+        return row;
       });
-    },
-    []
-  );
+      return newMatrix;
+    });
+  }, []);
 
   const handleCellEnter = useCallback(
     (cell: Cell) => {
@@ -108,10 +105,10 @@ export const MatrixTableProvider: FC<
     [highlightedCellsSet]
   );
 
-  const handleDeleteRow = useCallback((rowIndex: number) => {
+  const handleDeleteRow = useCallback((rowId: number) => {
     startTransition(() => {
       setMatrix((prevMatrix) =>
-        prevMatrix.filter((_, index) => index !== rowIndex)
+        prevMatrix.filter((row) => row[0].id !== rowId)
       );
     });
   }, []);
