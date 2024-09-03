@@ -5,36 +5,48 @@
   padding: 8px;
 }
 
-.matrix-table-container {
-  font-size: 10px;
+.table-container {
+  font-size: 12px;
   width: max-content;
 }
 
-.row {
+.table-header {
+  display: grid;
+}
+
+.table-footer {
+  display: grid;
+}
+
+.table-row {
   display: grid;
   position: relative;
 }
 
-.header-cell {
+.table-cell {
   padding: 4px;
   text-align: center;
+  border: 1px solid #cccccc;
+  overflow: hidden;
+  user-select: none;
+}
+
+.table-header > .table-cell {
   font-weight: bold;
   background-color: #f0f0f0;
-  border: 1px solid #cccccc;
-  overflow: hidden;
-  user-select: none;
 }
 
-.cell {
-  padding: 4px;
-  text-align: center;
-  border: 1px solid #cccccc;
-  overflow: hidden;
-  user-select: none;
-}
-
-.cell:hover {
+.table-row > .table-cell:hover {
+  cursor: pointer;
   background-color: antiquewhite;
+}
+
+.table-row > .table-cell:first-child:hover {
+  background-color: transparent;
+}
+
+.table-footer > .table-cell {
+  background-color: transparent;
 }
 
 .sum-cell {
@@ -53,7 +65,7 @@
   background-color: skyblue;
 }
 
-.delete-button {
+.row-delete-button {
   position: absolute;
   top: 0;
   right: 0;
@@ -66,17 +78,26 @@
   translate: 100%;
 }
 
-.add-button {
-  padding: 8px 0;
+.header-controlls {
+  display: flex;
+  font-size: 16px;
+  align-items: center;
+  padding: 4px;
+  gap: 4px;
+}
+
+.row-add-button {
+  margin: 8px 0;
 }
 
 .input-container {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 10px;
+  gap: 4px;
 }
 
 input {
+  width: 100px;
   margin: 4px;
 }

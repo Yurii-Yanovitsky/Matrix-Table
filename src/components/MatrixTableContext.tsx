@@ -4,7 +4,6 @@ import {
   PropsWithChildren,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
   useTransition,
@@ -20,6 +19,7 @@ type MatrixTableContextType = {
   incrementCell: (rowId: number, cellId: number) => void;
   highlightNearestCells: (cell: Cell) => void;
   resetHighlightedCells: () => void;
+  setHighlightCellsAmount: (value: number) => void;
   deleteRow: (rowId: number) => void;
   addRow: () => void;
 };
@@ -33,23 +33,20 @@ const MatrixTableContext = createContext<MatrixTableContextType>({
   incrementCell: () => {},
   highlightNearestCells: () => {},
   resetHighlightedCells: () => {},
+  setHighlightCellsAmount: () => {},
   deleteRow: () => {},
   addRow: () => {},
 });
 
 export const MatrixTableProvider: FC<
-  PropsWithChildren<{ initMatrix: Cell[][]; highlightedAmount: number }>
-> = ({ children, initMatrix, highlightedAmount }) => {
+  PropsWithChildren<{ initMatrix: Cell[][] }>
+> = ({ children, initMatrix }) => {
   const [matrix, setMatrix] = useState(initMatrix);
   const [highlightedCellsSet, setHighlightedCellsSet] = useState(
     new Set<number>()
   );
-
-  useEffect(() => {
-    setMatrix(initMatrix);
-  }, [initMatrix]);
-
   const [isPending, startTransition] = useTransition();
+  const [highlightAmount, setHighlightAmount] = useState(0);
 
   const incrementCell = useCallback((rowId: number, cellId: number) => {
     setMatrix((prevMatrix) => {
@@ -84,12 +81,12 @@ export const MatrixTableProvider: FC<
               Math.abs(b.amount - cell.amount)
           )
           .filter((c) => c.id !== cell.id)
-          .slice(0, highlightedAmount);
+          .slice(0, highlightAmount);
 
         setHighlightedCellsSet(new Set(nearestCells.map((cell) => cell.id)));
       });
     },
-    [matrix, highlightedAmount]
+    [matrix, highlightAmount]
   );
 
   const resetHighlightedCells = useCallback(() => {
@@ -124,6 +121,12 @@ export const MatrixTableProvider: FC<
     });
   }, []);
 
+  const setHighlightCellsAmount = useCallback((value: number) => {
+    startTransition(() => {
+      setHighlightAmount(value);
+    });
+  }, []);
+
   const value = useMemo(() => {
     return {
       matrix,
@@ -134,6 +137,7 @@ export const MatrixTableProvider: FC<
       incrementCell,
       highlightNearestCells,
       resetHighlightedCells,
+      setHighlightCellsAmount,
       deleteRow,
       addRow,
     };
@@ -144,6 +148,7 @@ export const MatrixTableProvider: FC<
     incrementCell,
     highlightNearestCells,
     resetHighlightedCells,
+    setHighlightCellsAmount,
     deleteRow,
     addRow,
   ]);

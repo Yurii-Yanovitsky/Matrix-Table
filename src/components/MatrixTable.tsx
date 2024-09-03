@@ -4,18 +4,9 @@ import { MatrixFooter } from "./MatrixFooter";
 import { MatrixHeader } from "./MatrixHeader";
 import { MatrixBody } from "./MatrixBody";
 
-const MatrixTable = ({
-  matrix,
-  highlightedAmount,
-}: {
-  matrix: Cell[][];
-  highlightedAmount: number;
-}) => {
+const MatrixTable = ({ matrix }: { matrix: Cell[][] }) => {
   return (
-    <MatrixTableProvider
-      initMatrix={matrix}
-      highlightedAmount={highlightedAmount}
-    >
+    <MatrixTableProvider initMatrix={matrix}>
       <div className="table-container">
         <MatrixHeader />
         <MatrixBody />

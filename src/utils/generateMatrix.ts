@@ -9,7 +9,7 @@ export type Cell = {
   amount: number;
 };
 
-export function generateRow(size: number, range: number) {
+export function generateRow(size: number, range = 1000) {
   const row: Cell[] = [];
   for (let j = 0; j < size; j++) {
     const cell = {
@@ -23,7 +23,7 @@ export function generateRow(size: number, range: number) {
   return row;
 }
 
-export function generateMatrix(m: number, n: number, range: number) {
+export function generateMatrix(m: number, n: number, range = 1000) {
   const matrix: Cell[][] = [];
 
   for (let i = 0; i < m; i++) {

@@ -1,58 +1,52 @@
-type MatrixInputFormProps = {
-  m: number;
-  n: number;
-  x: number;
-  onMChange: (value: number) => void;
-  onNChange: (value: number) => void;
-  onXChange: (value: number) => void;
-};
+import { FormEvent, useCallback, useRef } from "react";
+import { Cell, generateMatrix } from "../utils/generateMatrix";
+import { parseInputNumValue } from "../utils/parseInputNumValue";
 
-const parseInputValue = (inputValue: string, maxLimit = 100) => {
-  const value = parseInt(inputValue) || 0;
-  return value <= maxLimit ? value : maxLimit;
+type MatrixInputFormProps = {
+  onMatrixCreate: (matrix: Cell[][]) => void;
 };
 
 const MatrixInputForm: React.FC<MatrixInputFormProps> = ({
-  m,
-  n,
-  x,
-  onMChange,
-  onNChange,
-  onXChange,
+  onMatrixCreate,
 }) => {
+  const inputMRef = useRef<HTMLInputElement>(null);
+  const inputNRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmitMatrix = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+
+      if (inputMRef.current && inputNRef.current) {
+        const m = parseInputNumValue(inputMRef.current.value);
+        const n = parseInputNumValue(inputMRef.current.value);
+        onMatrixCreate(generateMatrix(m, n));
+      }
+    },
+    [onMatrixCreate]
+  );
+
   return (
-    <div className="input-container">
+    <form className="input-container" onSubmit={handleSubmitMatrix}>
       <label htmlFor="M">M = </label>
       <input
+        ref={inputMRef}
         id="M"
         type="number"
-        placeholder="M"
+        placeholder="0-100"
         min={0}
         max={100}
-        value={m}
-        onChange={(e) => onMChange(parseInputValue(e.target.value))}
       />
       <label htmlFor="N">N = </label>
       <input
+        ref={inputNRef}
         id="N"
         type="number"
-        placeholder="N"
+        placeholder="0-100"
         min={0}
         max={100}
-        value={n}
-        onChange={(e) => onNChange(parseInputValue(e.target.value))}
       />
-      <label htmlFor="X">X = </label>
-      <input
-        id="X"
-        type="number"
-        placeholder="X"
-        min={0}
-        max={n * m}
-        value={x}
-        onChange={(e) => onXChange(parseInputValue(e.target.value, n * m))}
-      />
-    </div>
+      <input type="submit" value="Create Matrix" />
+    </form>
   );
 };
 
