@@ -18,7 +18,7 @@ const MatrixInputForm: React.FC<MatrixInputFormProps> = ({
 
       if (inputMRef.current && inputNRef.current) {
         const m = parseInputNumValue(inputMRef.current.value);
-        const n = parseInputNumValue(inputMRef.current.value);
+        const n = parseInputNumValue(inputNRef.current.value);
         onMatrixCreate(generateMatrix(m, n));
       }
     },
